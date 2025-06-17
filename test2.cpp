@@ -1,61 +1,61 @@
 #include <iostream>
 using namespace std;
 
-int add(int a, int b) { return a + b; }
+int add3Num(int a, int b, int c);
 
-float add(float a, float b) { return a + b; }
+float add(float a, float b, float c) { return a + b + c; }
 
-class Person {
+void set3PinNumbers(int& a, int& b, int& c) {
+  cout << "What is your 3 numbers for the Pin: ";
+  cin >> a >> b >> c;
+}
+
+class User {
+ private:
+  int pin;
+
  public:
   string name;
   int age;
-  int sum;
 
-  // Constructor (initializes fields when object is created)
-  Person(const string& name, int age, int sum) {
+  User(const string& name, int age) {
     this->name = name;
     this->age = age;
-    this->sum = sum;
   }
 
-  // Const method: promises not to modify the object
-  void whoareyou() const {
-    cout << "Hi, I'm " << name << " and I'm " << age << " years old. My sum is "
-         << sum << "." << endl;
+  int getPin() const { return pin; }
+
+  void setPin(int newSum) { pin = newSum; }
+
+  void whoami() const {
+    cout << "Hello, this is " << name << ". I'm " << age << " years old."
+         << endl;
   }
 
-  // Inline method inside the class
   void greet() const { cout << "Nice to meet you!" << endl; }
 };
 
-// Function that takes input by reference (avoids copying)
-void getTwoNumbers(int& a, int& b) {
-  cout << "Enter two numbers: ";
-  cin >> a >> b;
-}
-
 int main() {
-  string name;
-  int age;
-  int x, y;
+  string userName;
+  int userAge;
+  int pin1;
+  int pin2;
+  int pin3;
+  int sum;
 
-  cout << "What is her name: ";
-  cin >> name;
+  cout << "What is your name: ";
+  cin >> userName;
 
-  cout << "What is her age: ";
-  cin >> age;
+  cout << "What is your age: ";
+  cin >> userAge;
 
-  getTwoNumbers(x, y);  // pass by reference
+  set3PinNumbers(pin1, pin2, pin3);
 
-  int sum = add(x, y);  // uses int version
-
-  Person p(name, age, sum);  // uses constructor
-  p.whoareyou();
-  p.greet();
-
-  // Optional: show overloaded float version
-  float fx = 2.5f, fy = 3.7f;
-  cout << "Float sum: " << add(fx, fy) << endl;
-
-  return 0;
+  User u(userName, userAge);
+  u.setPin(add3Num(pin1, pin2, pin3));
+  u.whoami();
+  u.greet();
+  cout << "My Pin is " << u.getPin() << "." << endl;
 }
+
+int add3Num(int a, int b, int c) { return a + b + c; }
