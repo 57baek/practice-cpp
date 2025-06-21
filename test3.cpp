@@ -1,6 +1,5 @@
 #include <iostream>
 #include <string>
-using namespace std;
 
 // ---------- Section 1: Namespace + Utilities ----------
 namespace utils {
@@ -9,11 +8,11 @@ int add3Num(int a, int b, int c) { return a + b + c; }
 float add(float a, float b, float c) { return a + b + c; }
 
 void set3PinNumbers(int& a, int& b, int& c) {
-    cout << "Enter 3 numbers for your pin: ";
-    cin >> a >> b >> c;
+    std::cout << "Enter 3 numbers for your pin: ";
+    std::cin >> a >> b >> c;
 }
 
-using str = string;  // type alias
+using str = std::string;  // type alias for std::string
 }  // namespace utils
 
 // ---------- Section 2: Class with Advanced Features ----------
@@ -37,13 +36,13 @@ class User {
         if (newPin >= 0)
             pin = newPin;
         else
-            cout << "❌ Invalid pin: must be non-negative." << endl;
+            std::cout << "❌ Invalid pin: must be non-negative." << std::endl;
     }
 
     // Inline method
-    void whoami() const { cout << "👤 Hello, I'm " << name << ". I'm " << age << " years old." << endl; }
+    void whoami() const { std::cout << "👤 Hello, I'm " << name << ". I'm " << age << " years old." << std::endl; }
 
-    void greet() const { cout << "👋 Nice to meet you!" << endl; }
+    void greet() const { std::cout << "👋 Nice to meet you!" << std::endl; }
 
     static int getUserCount() { return userCount; }
 };
@@ -57,11 +56,11 @@ int main() {
     int userAge;
     int pin1, pin2, pin3;
 
-    cout << "What is your name: ";
-    cin >> userName;
+    std::cout << "What is your name: ";
+    std::cin >> userName;
 
-    cout << "What is your age: ";
-    cin >> userAge;
+    std::cout << "What is your age: ";
+    std::cin >> userAge;
 
     utils::set3PinNumbers(pin1, pin2, pin3);
 
@@ -70,8 +69,8 @@ int main() {
 
     u.whoami();
     u.greet();
-    cout << "🔐 Your PIN is: " << u.getPin() << endl;
-    cout << "👥 Users created so far: " << User::getUserCount() << endl;
+    std::cout << "🔐 Your PIN is: " << u.getPin() << std::endl;
+    std::cout << "👥 Users created so far: " << User::getUserCount() << std::endl;
 
     return 0;
 }
