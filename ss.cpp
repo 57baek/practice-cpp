@@ -1,19 +1,32 @@
+#include <chrono>
 #include <iostream>
 #include <optional>
 #include <string>
 #include <unordered_map>
 
 namespace utils {
-int addNums(int x, int y, int z) { return x + y + z; }
-float addNums(float x, float y, float z) { return x + y + z; }
+
+constexpr int addNums(int x, int y, int z) { return x + y + z; }
+constexpr float addNums(float x, float y, float z) { return x + y + z; }
+constexpr double nth(double x, int n) {
+    if (n < 0) return 0.0;
+
+    double res = 1.0;
+    for (int i = 0; i < n; ++i) {
+        res *= x;
+    }
+    return res;
+}
 }  // namespace utils
 
 namespace login {
+
 int generateUserID() {
     int x, y, z;
     std::cout << "Enter your 3 favorite numbers: ";
     std::cin >> x >> y >> z;
-    return utils::addNums(x, y, z);
+    const int userID = utils::addNums(x, y, z);
+    return utils::nth(userID, x);
 }
 }  // namespace login
 
@@ -23,7 +36,8 @@ class User {
     std::string loginPassword;
     int userID;
     static int totalUsers;
-    bool is_in_game;
+    bool isInGame = false;
+    std::chrono::steady_clock::time_point startTime;
 
   public:
     static int gameTime;
@@ -32,13 +46,16 @@ class User {
     std::optional<float> mp = 0;
     int lv = 0;
 
-    User(const std::string& loginID, const std::string& loginPassword, const std::string& userName,
-         bool is_in_game = false)
-        : loginID(loginID), loginPassword(loginPassword), userName(userName), is_in_game(is_in_game) {
+    User(const std::string& loginID, const std::string& loginPassword, const std::string& userName)
+        : loginID(loginID),
+          loginPassword(loginPassword),
+          userName(userName),
+          userID(login::generateUserID()) 
+    {
         ++totalUsers;
     }
 
-    void setUserID(int id) { userID = id; }
+    int getTotalUsers() const { return totalUsers; }
 
     void printStats() const {
         std::cout << "🔹 Stats for " << userName << ": HP=" << hp;
@@ -49,15 +66,29 @@ class User {
         std::cout << ", LV=" << lv << '\n';
     }
 
-    void enterGame() { is_in_game = true; }
+    void enterGame() {
+        isInGame = true;
+        startTime = std::chrono::steady_clock::now();  // Record current time
+    }
 
-    int getTotalUsers() const { return totalUsers; }
+    void endGame() {
+        if (isInGame) {
+            auto endTime = std::chrono::steady_clock::now();
+            gameTime = std::chrono::duration_cast<std::chrono::seconds>(endTime - startTime).count();
+            std::cout << "🕒 Total Game Time: " << gameTime << " seconds\n";
+            isInGame = false;
+            gameTime = 0;  // Reset for next game
+        } else {
+            std::cout << "⚠️ You're not in a game.\n";
+        }
+    }
 };
 
 int User::totalUsers = 0;
 int User::gameTime = 0;
 
 namespace game {
+
 struct CharacterStats {
     float hp;
     std::optional<float> mp;
