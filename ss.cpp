@@ -23,7 +23,7 @@ namespace login {
 
 int generateUserID() {
     int x, y, z;
-    std::cout << "Enter your 3 favorite numbers: ";
+    std::cout << "Enter 3 favorite numbers: ";
     std::cin >> x >> y >> z;
     const int userID = utils::addNums(x, y, z);
     return utils::nth(userID, x);
@@ -144,7 +144,6 @@ int main() {
     std::cin >> name;
 
     User u(id, pw, name);
-    u.setUserID(login::generateUserID());
 
     std::string selectedChar;
     std::cout << "Choose your character (Garen, Ahri, Ezreal, Lux, LeeSin): ";
